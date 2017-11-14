@@ -1,0 +1,15 @@
+Application Settings
+Keep the "Consumer Secret" a secret. This key should never be human-readable in your application.
+Consumer Key (API Key)	hV7WT4FuJiBZjfbGcYS5nZTiQ
+Consumer Secret (API Secret)	wk9gNNO1PJ7GimhBQIGUXEUjRpMi2z2Mk1tD3MSJMmXJgWTDG2
+Access Level	Read and write (modify app permissions)
+Owner	tulipscat
+Owner ID	1334281922
+
+Your Access Token
+This access token can be used to make API requests on your own account's behalf. Do not share your access token secret with anyone.
+Access Token	1334281922-1KPysIRT9hzTeH3liT5iC2XwL7bqIVTGZasLASZ
+Access Token Secret	BBcURCLAt5nNyD8pxGHiSazMVAZiuy1uoVYirSgwrTqlC
+Access Level	Read and write
+Owner	tulipscat
+Owner ID	1334281922

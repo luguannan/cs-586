@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Disaster analysis
+	</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel = "stylesheet" href = "https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        
+        <link rel='stylesheet prefetch' href='https://cdn.gitcdn.xyz/cdn/angular/bower-material/v1.0.0-rc4/angular-material.css'>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    	<link rel='stylesheet' href='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.5/angular-material.css'>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.4/angular-material.min.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="style.css">
+		<script src = "draw.js"></script>
+		
+		<script type="moment.js"></script>
+		<script type="text/javascript">
+		google.charts.load('current', {'packages':['corechart']});
+		google.charts.load('current', {
+	        'packages':['map'],
+	        'mapsApiKey': 'AIzaSyB2CYleoVt9ZxUX8XcoaH1tnkcNiqSIzgs'
+    	});
+    	google.charts.load('current', {packages: ['corechart', 'line']});
+	</script>
+
+</head>
+
+<body ng-app="MdAutocompleteBugApp" ng-controller="MdAutocompleteBugController as vm" >
+	<div class = "text-center">
+		<br><br>
+		<h2>* Disaster Search for Analysis *</h2>
+	</div>
+	<br>
+		<br>
+
+	
+	<form name = "form">
+		<div class = "row text-center">
+			<div id = "searchdiv">
+				<label for = "symbolsearch" id = inputlabel class= "col-md-4 text-right">Please enter a disaster name :</label>
+				<input type="text" name="symbol" ng-model = "symbol" id="symbol" placeholder="e.g. earthquake"  value="" required class= "col-md-5">
+				
+			</div>
+<!--
+			<div class="container">
+			    <div class="row">
+			        <div class='col-sm-6'>
+			            <div class="form-group">
+			                <div class='input-group date' id='datetimepicker5'>
+			                    <input type='text' class="form-control" />
+			                    <span class="input-group-addon">
+			                        <span class="glyphicon glyphicon-calendar"></span>
+			                    </span>
+			                </div>
+			            </div>
+			        </div>
+			        <script type="text/javascript">
+			            $(function () {
+			                $('#datetimepicker5').datetimepicker({
+			                    defaultDate: "11/1/2013",
+			                    disabledDates: [
+			                        moment("12/25/2013"),
+			                        new Date(2013, 11 - 1, 21),
+			                        "11/22/2013 00:53"
+			                    ]
+			                });
+			            });
+			        </script>
+			    </div>
+			</div>
+-->
+
+			<div class = "row">
+				<label for = "select_month" class = "col-md-4 text-right">Please select a month: </label>
+				<select ng-model = "month_selector" class = "select col-md-4" id = "select_smonth" ng-init = "month_selector = '01'">
+					<option ng-repeat = "month in vm.months" value = {{month}}>{{month}}</option>
+				
+				</select>
+				
+			</div>
+
+
+			<div class = "row">
+				<label for = "select_year" class = "col-md-4 text-right">Please select a year : </label>
+				<select ng-model = "year_selector" class = "select col-md-4" id = "select_year" ng-init = "year_selector = '2014'">
+					<option ng-repeat = "year in vm.years" value = {{year}}>{{year}}</option>
+				
+				</select>
+				
+			</div>
+
+
+
+			
+			
+		</div>
+			<br>
+		
+
+		<div class="form-group row">
+			<div class = "col-md-4"></div>
+
+	      	<div class="col-md-4 text-center">
+	    		<button type="submit" class="btn btn-info get-quote" id="searchbtn" ng-click="searchresult()">
+	      			<span id="search_button_text">
+	      				<span class="glyphicon glyphicon-search"></span> Search
+	      			</span>
+    			</button>
+
+		  	</div>
+
+		 	<div class = "col-md-3"></div>
+		</div>
+		
+	</form>
+	<div id = "disaster_detail" style="width: 100%;">
+		<p id = "detail_t" class = "text-center"></p>
+		<div class = "row table-responsive">
+			<span class = "col-md-3"></span>
+			<span class = "col-md-7">
+				<table id = "detail_table" class = "table table-striped" ng-if = "symbol == 'earthquake'" style = "display: none;" align="center">
+					<tr>
+						<th>Name</th>
+		                <th>Longitude</th>
+		                <th>Latitude</th>
+		                <th>Time</th>
+		                <th>Magnitude</th>
+		                <th>depth</th>
+						
+					</tr>
+					<tr ng-repeat="it in vm.details" >
+		            	<td><a href="" ng-click = "show_tw()">{{it[0]}}</a></td>
+		            	<td>{{it[1]}}</td>
+		            	<td>{{it[2]}}</td>
+		            	<td>{{it[3]}}</td>
+		            	<td>{{it[4]}}</td>
+		            	<td>{{it[5]}}</td>
+						
+					</tr>
+
+					
+				</table>
+
+				<table id = "detail_table" class="table table-striped" ng-if = "symbol == 'fire'" style = "display: none;" align="center">
+					<tr>
+						<th>Name</th>
+		                <th>Longitude</th>
+		                <th>Latitude</th>
+		                <th>Discovery Time</th>
+		                <th>Continue Time</th>
+		                <th>Fire Size</th>
+						
+					</tr>
+					<tr ng-repeat="it in vm.details" >
+		            	<td><a href="" ng-click = "show_tw()">{{it[0]}}</a></td>
+		            	<td>{{it[1]}}</td>
+		            	<td>{{it[2]}}</td>
+		            	<td>{{it[3]}}</td>
+		            	<td>{{it[4]}}</td>
+		            	<td>{{it[5]}}</td>
+						
+					</tr>
+
+					
+				</table>
+
+
+
+
+
+				
+			</span>
+			
+
+			<span class = "col-md-2"></span>
+
+			
+		</div>
+		
+		
+	</div>
+
+	<br>
+	<br>
+
+	<div id = "timecontainer" style="width: 100%;">
+		<p id = "time_t" class = "text-center"></p>
+		<div class = "row">
+			<div class = "col-md-1"></div>
+			<div id="curve_chart" class = "col-md-10" style="height: 600px"></div>
+			<div class = "col-md-1"></div>			
+		</div>
+		
+
+		
+	</div>
+	
+	<br>
+	<br>
+
+	<div id = "locationcontainer" style="width: 100%;">
+		<p id = "location_t" class = "text-center"></p>
+		<div class = "row">
+			<div class = "col-md-2"></div>
+			<div id="map_markers_div" class = "col-md-8" style=" height: 400px">
+				
+			</div>
+			<div class = "col-md-2"></div>
+			<!--
+			<span>  </span>
+			<div class = "col-md-5">
+				<img  id = "fema_img" src="https://gis.fema.gov/maps/disaster/dec_4193.png"  style=" height: 420px; display: none;">
+			</div>
+		-->
+		</div>
+
+		    
+	</div>
+
+	<br>
+	<br>
+
+    <div id = "keywordcontainer"  class = "text-center" style="width: 100%; height: 500px; display:none;">
+    	<p id = keyword_t class = "text-center"></p>
+    	<div ng-if = "symbol== 'earthquake' " id="keyword_chart" class = "row" style="height: 300px;" align:center;>
+    		<div class = "col-md-2"></div>
+    		<img src="http://127.0.0.1:3006/earthquake.png" class = "col-md-8">
+    		<div class = "col-md-2"></div>
+    		
+    	</div>
+    	<div ng-if = " symbol== 'fire' " id="keyword_chart" class = "row" style="height: 300px;">
+    		<div class = "col-md-2"></div>
+    		<img src="http://127.0.0.1:3006/fire.png" class = "col-md-8">
+    		<div class = "col-md-2"></div>
+    		
+    	</div>
+    	<div ng-if = "symbol == 'storm' " id="keyword_chart" class = "row" style="height: 300px;">
+    		<div class = "col-md-2"></div>
+    		<img src="http://127.0.0.1:3006/storm.png" class = "col-md-8">
+    		<div class = "col-md-2"></div>
+    		
+    	</div>
+    	<div ng-if = "symbol == 'tornado' " id="keyword_chart" class = "row" style=" height: 300px;" >
+    		<div class = "col-md-2"></div>
+    		<img src="http://127.0.0.1:3006/tornado.png" class = "col-md-8">
+    		<div class = "col-md-2"></div>
+    		
+    	</div>
+      
+    </div>
+
+    <br>
+	<br>
+
+
+    <div id = "sentimentcontainer" class = "text-center" style="width: 100%;"> 
+    	<p id = "sentiment_t" class = "text-center"></p>
+
+    	<div class = "row">
+			<div class = "col-md-3"></div>
+    		<div id="pie_chart" class = "col-md-8" style="height: 500px"></div>
+			<div class = "col-md-1"></div>			
+		</div>
+
+
+    	
+    </div>
+
+</body>
+</html>

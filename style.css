@@ -1,0 +1,41 @@
+body{
+	background-color:white; 
+}
+
+#searchdiv{
+	height: 50px;
+}
+
+input{
+	height:40px;
+}
+label{
+	padding-top: 10px;
+	font-weight:50px;
+	font-style: bold;
+	color:grey;
+	font-family: Verdana;
+}
+
+h3{
+	font-family: Georgia;
+	color:grey;
+}
+select{
+	height:50px;
+	width:100px;
+}
+option{	
+
+
+
+}
+th{
+	font-family: Georgia;
+	font-weight:bold;
+	text-align: center;
+}
+td{
+
+	text-align: center;
+}
